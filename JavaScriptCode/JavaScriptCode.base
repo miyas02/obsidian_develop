@@ -1,0 +1,19 @@
+# JavaScriptCode
+
+filters:
+  and:
+    - note["base"] == link("JavaScriptCode.base")
+properties:
+  file.name:
+    displayName: Name
+  Tags:
+    displayName: Tags
+  Text:
+    displayName: Text
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - Tags
+      - Text
