@@ -7,11 +7,14 @@
 - **ローカルリポジトリ (Local Repository)**: 自分のPC上にある、変更履歴を保存する場所。`git commit`でステージングの内容がここに記録される。
 - **リモートリポジトリ (Remote Repository)**: ネットワーク上(GitHubなど)にある、変更履歴を共有するための場所。`git push`でローカルの内容を送信する。
 # コマンド
-```
-# コマンド
+## セットアップ
 ```shell
-# セットアップ
 git init
+```
+## 状態・差分確認
+```shell
+# 状態の確認
+git status
 
 # 差分の確認 (Diff)
 # 作業ディレクトリとステージングの差分
@@ -20,79 +23,90 @@ git diff
 git diff --staged (または --cached)
 # 作業ディレクトリと最新コミットの差分
 git diff HEAD
-
-# ステージング
-$ git add ファイル名
-# ファイルを一括してステージング
-$ git add -A
-
-# ログの確認 (Log)
-git log
-git log --oneline --graph --all # グラフで履歴を簡潔に表示
-git log -n 5 # 最新5件を表示
-
-# コミット
+```
+## ステージング
+```shell
+# ファイル単位
+git add <ファイル名>
+# 全変更を一括
+git add -A
+```
+## コミット
+```shell
 git commit -m "コミットメッセージ"
 git commit -v # 変更内容を確認しながらコミット
 
-# リモートリポジトリの登録 originというニックネームでurl先のリモートリポジトリを登録
+# 直前のコミットを上書き (amend)
+git commit --amend -m "新しいコミットメッセージ"
+```
+## ログ確認
+```shell
+git log
+git log --oneline --graph --all # グラフで履歴を簡潔に表示
+git log -n 5 # 最新5件を表示
+```
+## リモート操作
+```shell
+# リモートリポジトリの登録
 git remote add origin https://github.com/sample.git
 
+# リモート一覧確認
+git remote -v
+
 # push
-# originはリモートリポジトリのニックネーム（デフォルト)
 git push -u origin master
 
 # pull (fetch + merge)
 git pull origin master
 
-# fetch (リモートの変更を取得だけする)
-# origin/masterなどの追跡ブランチが更新されるが、作業ディレクトリは変更されない
+# fetch
 git fetch origin
 
-# リモートリポジトリのニックネームを確認
-git remote -v
-
-# リモートリポジトリからローカルリポジトリをクローン
+# clone
 git clone https://github.com/sample.git
-
-# ブランチの切り替え
-git checkout <ブランチ名>
-git switch <ブランチ名>
-git checkout - #1つ前のブランチに切り替え
-
-# 新しいブランチの作成
+```
+## ブランチ操作
+```shell
+# 作成
 git checkout -b <新しいブランチ名>
 
-# gitignoreの作成
-touch .gitignore
+# 切り替え
+git checkout <ブランチ名>
+git switch <ブランチ名>
+git checkout - # 前のブランチへ
 
-# 直前のコミットを上書き (amend)
-git commit --amend -m "新しいコミットメッセージ"
-
-# 変更の取り消し (Reset vs Revert)
-## Reset (過去に戻る - 履歴が消えることがあるため注意)
-# ステージングを取り消す（作業ディレクトリはそのまま）
+# 一覧表示
+git branch
+```
+## 変更の取り消し・退避
+```shell
+# Reset (注意: 履歴が消える場合あり)
+## ステージングのみ取り消し
 git reset HEAD <file>
-# 直前のコミットを取り消す（ワークディレクトリの内容は維持）
+## 直前コミット取り消し (ワークディレクトリ維持)
 git reset --soft HEAD^
-# 直前のコミットと変更をすべて破棄する（危険！）
+## 全て破棄 (危険)
 git reset --hard HEAD^
 
-## Revert (打ち消しコミットを作る - 安全)
-# 特定のコミットの内容を打ち消す新しいコミットを作成する
+# Revert (安全: 打ち消しコミット)
 git revert <コミットID>
 
-# 変更を退避 (Stash)
-git stash save "退避メッセージ"
-git stash -u # "untracked(未追跡ファイル)も含む"
-git stash list # 退避した一覧を表示
-git stash pop # 最新の退避を復元してリストから削除
-git stash apply # 最新の退避を復元するがリストに残す
-git stash drop stash@{0} # その退避を削除
-git stash clear # 全ての退避を削除
+# Stash (退避)
+git stash save "メッセージ"
+git stash -u # 未追跡含む
+git stash list
+git stash pop
+git stash apply
+git stash drop stash@{0}
+git stash clear
+```
+## その他
+```shell
+# gitignore作成
+touch .gitignore
 
-# 別ブランチの一部のcommitだけを反映
-git cherry-pick abc1234 #コミットID
+# Cherry Pick
+git cherry-pick <commit_id>
 ```
 
 # ベストプラクティス
