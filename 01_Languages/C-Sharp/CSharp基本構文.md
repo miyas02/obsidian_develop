@@ -250,6 +250,64 @@ string result = text;      // ⚠ CS8600: null になるかもしれないのに
 string result2 = text ?? "default"; // ??
 ```
 # XMLドキュメントコメント
+# LINQ (Language Integrated Query)
+コレクション（配列やListなど）に対する操作を統一的な記法で行う機能。
+`using System.Linq;` が必要。
+
+## メソッド構文 (Method Syntax)
+ラムダ式 `=>` を使って記述する、最も一般的な書き方。
+
+```c#
+var numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
+```
+
+### 抽出・変換
+- **Where**: 条件に一致する要素を取り出す
+  ```c#
+  var even = numbers.Where(x => x % 2 == 0); // 2, 4, 6
+  ```
+- **Select**: 要素を変換する（射影）
+  ```c#
+  var squares = numbers.Select(x => x * x); // 1, 4, 9...
+  ```
+
+### 取得・判定
+- **FirstOrDefault**: 最初の要素を取得（なければデフォルト値/null）
+  ```c#
+  var first = numbers.FirstOrDefault(x => x > 3); // 4
+  ```
+- **Any**: 条件を満たす要素が存在するか確認（bool）
+  ```c#
+  bool hasTes = numbers.Any(x => x > 10); // false
+  ```
+- **All**: 全ての要素が条件を満たすか確認（bool）
+  ```c#
+  bool allPositive = numbers.All(x => x > 0); // true
+  ```
+- **Count**: 要素数を取得
+  ```c#
+  int count = numbers.Count(); // 6
+  ```
+
+### 並び替え
+- **OrderBy / OrderByDescending**: 昇順 / 降順
+  ```c#
+  var sorted = numbers.OrderByDescending(x => x); // 6, 5, 4...
+  ```
+
+### 即時実行
+LINQの多くは**遅延実行**（必要になるまで計算されない）だが、以下は即時実行される。
+- **ToList()**: List型に変換
+- **ToArray()**: 配列に変換
+
+```c#
+// よくあるパターン：フィルタして変換してリスト化
+var result = numbers
+    .Where(x => x > 3)
+    .Select(x => x.ToString())
+    .ToList();
+```
+
 # Link
 ### Json to C#
 jsonをC#クラスに変換
