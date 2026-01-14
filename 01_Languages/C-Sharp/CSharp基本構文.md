@@ -76,14 +76,12 @@ Number = 10; //setメソッドを実行
 private int age; //フィールド
 public int Age { get; set; }  //自動プロパティ. コンパイラが裏でフィールドを作ってくれる
 ```
-
 ### アクセサ
 **init**
 プロパティのsetの代わりにinitと記述すると、コンストラクタのみで値を設定可能(後続での値設定不可)
 ```c#
 public int Age {get; init} //
 ```
-
 ### バッキングフィールド
 プロパティの「中身を実際に保持している変数」 のこと。プロパティは窓口。
 ```c#
@@ -99,21 +97,18 @@ public int Age     // ← プロパティ（窓口）
 }
 Age = 20; //setメソッドを実行
 ```
-
 ### 初期化子
 ```c#
 public NodeSelector Selector {
     get; set;
 } = new NodeSelector(); //初期化子 コンストラクタと一緒
 ```
-
 ## 修飾子
 ### required
 オブジェクト初期化時に必ず値を設定することをコンパイラに要求する
 ```c#
 public required string Name { get; set; } // クラスをインスタンス化するときに、Nameに値を設定が必須
 ```
-
 ### readonly
 この変数が別のオブジェクトを参照することを禁止する
 ```c#
@@ -123,7 +118,6 @@ private readonly List<string> list = new List<string>();
 list.Add("text"); //Addは可
 // list = new List<string>(); オブジェクト自体の変更は負荷
 ```
-
 ## メソッド
 ### 名前付き引数
 ```C#
@@ -134,7 +128,6 @@ void DisplayProfile(string name, int age, string city) {
 // 呼び出し方（順番を入れ替えてもOK）
 DisplayProfile(age: 25, city: "東京", name: "山田");
 ```
-
 ### デフォルト引数
 ```c#
 void メソッド名(型 引数名 = デフォルト値)
@@ -187,7 +180,6 @@ string ret = await client.GetStringAsync(url); //awaitを使用 非同期処理�
 Task<string> tsk = client.GetStringAsync(url);
 string task_result = tsk.Result //Task.Resultを使用 同期処理用
 ```
-
 # 5. 例外処理 (Exceptions)
 ## 自作例外クラス
 ```c#
@@ -198,17 +190,14 @@ public class MyCustomException : Exception
         : base(message) { }//コンストラクタ内の:baseの引数が例外発生時のメッセージとして表示される
 }
 ```
-
 ## 明示的に例外をスロー
 ```c#
 throw new Exception(Constants.ContentNotFound);
 ```
-
 # 6. コレクション操作 (Collections & LINQ)
 ## IEnumerable
 「列挙できるもの」を表す最も基本的なインターフェイス。
  `foreach` で回せるのはすべて `IEnumerable` を実装している。
-
 ## Dictionary
 ```c#
         //privateフィールド
@@ -225,14 +214,11 @@ throw new Exception(Constants.ContentNotFound);
 ## LINQ (Language Integrated Query)
 コレクション（配列やListなど）に対する操作を統一的な記法で行う機能。
 `using System.Linq;` が必要。
-
 ### メソッド構文 (Method Syntax)
 ラムダ式 `=>` を使って記述する、最も一般的な書き方。
-
 ```c#
 var numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
 ```
-
 #### 抽出・変換
 - **Where**: 条件に一致する要素を取り出す
   ```c#
@@ -260,18 +246,15 @@ var numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
   ```c#
   int count = numbers.Count(); // 6
   ```
-
 #### 並び替え
 - **OrderBy / OrderByDescending**: 昇順 / 降順
   ```c#
   var sorted = numbers.OrderByDescending(x => x); // 6, 5, 4...
   ```
-
 #### 即時実行
 LINQの多くは**遅延実行**（必要になるまで計算されない）だが、以下は即時実行される。
 - **ToList()**: List型に変換
 - **ToArray()**: 配列に変換
-
 ```c#
 // よくあるパターン：フィルタして変換してリスト化
 var result = numbers
@@ -279,7 +262,6 @@ var result = numbers
     .Select(x => x.ToString())
     .ToList();
 ```
-
 # 7. 実用ライブラリ・テクニック (Utilities)
 ## 数値変換 (TryParse)
 ```c#
@@ -292,21 +274,18 @@ bool result = int.TryParse(string s, out int value);
 //三項演算子を使用
 int? itemPrice = int.TryParse(value, out int price) ? price : null;
 ```
-
 ## JSON操作
 ### シリアライズ (JSON化)
 ```c#
 string json = JsonSerializer.Serialize(list);
 string json = JsonSerializer.Serialize(Items, new JsonSerializerOptions { WriteIndented = true }); //改行あり
 ```
-
 ### ファイル出力
 ```c#
         string filePath = @"C:\work\MyApps\matome_phase1\output.json"; //出力パスの定義
         string json = JsonSerializer.Serialize(list, options); //Listをjsonにシリアライズ
         File.WriteAllText(filePath, json); //書き出し
 ```
-
 ## ネットワーク (HTML取得)
 ```c#
 using System.Net.Http;
@@ -318,7 +297,6 @@ public static async Task<string> FetchHtmlAsync(string url)
     return await client.GetStringAsync(url);
 }
 ```
-
 # 8. その他 (Misc)
 ## XMLドキュメントコメント
 
@@ -329,7 +307,6 @@ string? text = GetText();  // null かもしれない
 string result = text;      // ⚠ CS8600: null になるかもしれないのに非null変数に代入
 string result2 = text ?? "default"; // ??
 ```
-
 ## 便利なリンク
 ### Json to C#
 jsonをC#クラスに変換
