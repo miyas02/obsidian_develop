@@ -1,5 +1,16 @@
-# Home View
-
+# Pin
+## CSharp
+- [CSharp基本構文](01_Languages/C-Sharp/CSharp基本構文.md)
+- [xUnit (CSharpテスト)](01_Languages/C-Sharp/xUnit%20(CSharpテスト).md)
+- [BlazorWASM](01_Languages/C-Sharp/BlazorWASM.md)
+## Git
+- [Git](02_SoftwareManuals/VersionControl/Git.md)
+## Design
+- [Base Design Format](03_Design/Base%20Design%20Format.md)
+- [Base Dsign](03_Design/Base%20Dsign.md)
+- [Detailed Design](03_Design/Detailed%20Design.md)
+- [Requirements Definition](03_Design/Requirements%20Definition.md)
+# View
 - **01_Languages**
     - **C-Sharp**
         - [BlazorWASM](01_Languages/C-Sharp/BlazorWASM.md)

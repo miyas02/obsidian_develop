@@ -108,17 +108,6 @@ touch .gitignore
 # Cherry Pick
 git cherry-pick <commit_id>
 ```
-# ベストプラクティス
-## コミットの粒度とタイミング
-- 「機能追加」「バグ修正」「リファクタリング」などを混ぜない。
-- 30分~2hくらいに一度のイメージ。
-## ブランチの命名規則 (Branch命名)
-- **feature**: 新機能開発
-- **fix**: バグ修正
-- **refactor**: リファクタリング
-- **experiment**: 試験的実装
-- **ui**: UI変更
-- **docs**: ドキュメントのみの変更
 # 高度な機能と運用
 ## .gitignore
 - Gitの追跡対象から外したいファイル（OSの生成ファイル、ビルド成果物、秘匿情報など）を指定する。
@@ -152,7 +141,6 @@ git rm --cached -r path/directory
     2. 修正したら `git add` する（これが解消の合図になる）。
     3. `git commit` でマージコミットを作成する。
     - ※コンフリクト中は作業コピーをそのままaddしてはいけない（マーカーが残ったままになるため）。
-
 ## Rebase
 - **概要**: コミット履歴を書き換える機能。
 - **履歴を1本にする**: マージコミットを作らず、ベースのブランチの先に自分の変更を付け替える。直列な履歴になる。
@@ -169,7 +157,9 @@ git cherry-pick <commit_id>
 - Github等の機能。リモートにPushした自分の開発ブランチを、メインブランチ（main/master/develop）にマージしてもらうよう依頼するもの。
 - コードレビューの場としても使われる。
 ## Tags
-- リリースポイントなどを記録するために使用する静的なポインタ。
+- コミットIDのエイリアス（別名）
+- 使い捨ての付箋として使用する。
+- （使用例）CIでテストが通った目印としてつけておく
 ```shell
 # タグの作成 (軽量タグ)
 git tag <tagname>
@@ -189,6 +179,39 @@ git tag -d <tagname>
 # リモートのタグを削除
 git push origin :<tagname>
 ```
+## Orphan
+何も親にもたないブランチ
+仕様書やドキュメント更新を、masterブランチと完全に切り分けて育てることができる
+```bash
+# 1. Orphanブランチの作成
+git checkout --orphan branch_name
+
+# 2. インデックスとワーキングツリーのファイルをすべて削除（Git管理からの除外）
+git rm -rf .
+
+# 3. 最初のコミット（これで初めてブランチが実体化する）
+echo "# Documentation" > README.md
+git add README.md
+git commit -m "initial commit for docs"
+
+# 4. mainの派生ブランチ（普段使用しているブランチ）でdocs更新のみのコミットを作成。
+#    docs更新コミットをcherry-pick
+git cherry-pick <commit_id>
+
+# mainブランチのdocsフォルダの内容だけを現在のブランチにコピー
+git checkout main -- docs/ 
+```
+# ベストプラクティス
+## コミットの粒度とタイミング
+- 「機能追加」「バグ修正」「リファクタリング」などを混ぜない。
+- 30分~2hくらいに一度のイメージ。
+## ブランチの命名規則 (Branch命名)
+- **feature**: 新機能開発
+- **fix**: バグ修正
+- **refactor**: リファクタリング
+- **experiment**: 試験的実装
+- **ui**: UI変更
+- **docs**: ドキュメントのみの変更
 # Troubleshooting
 ## commitを取り消したい
 - 直前のコミットの場合: `git reset --soft HEAD^` (変更内容はステージに残る)
