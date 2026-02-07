@@ -155,4 +155,4 @@
     - **python3基礎試験**
         - [学習計画](06_Plan/python3基礎試験/学習計画.md)
         - [徹底攻略 Python3](06_Plan/python3基礎試験/徹底攻略%20Python3.md)
-        - [清書](06_Plan/python3基礎試験/清書.md)
+        - [徹底攻略python3](徹底攻略python3.md)
