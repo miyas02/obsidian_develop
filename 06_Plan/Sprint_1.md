@@ -32,4 +32,11 @@ jinro_visualize開発
 **10h**
 python3資格試験を3月に受けるため、10hくらい勉強しておきたい。
 
-
+# result
+## 消費SP
+Scope 38SP
+Completed 26SP
+## 振り返り
+- さぼらずやろう。
+- Scope35SPにして、達成したい。
+- スプリント期間2weekにして、17SPにする。

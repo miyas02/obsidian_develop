@@ -107,6 +107,9 @@ touch .gitignore
 
 # Cherry Pick
 git cherry-pick <commit_id>
+
+# 特定ファイルだけチェックアウト
+git checkout [ソースとなるブランチ名] -- [ファイルパス]
 ```
 # 高度な機能と運用
 ## .gitignore
@@ -180,8 +183,10 @@ git tag -d <tagname>
 git push origin :<tagname>
 ```
 ## Orphan
+## 概要
 何も親にもたないブランチ
 仕様書やドキュメント更新を、masterブランチと完全に切り分けて育てることができる
+## コマンド
 ```bash
 # 1. Orphanブランチの作成
 git checkout --orphan branch_name
@@ -198,7 +203,7 @@ git commit -m "initial commit for docs"
 #    docs更新コミットをcherry-pick
 git cherry-pick <commit_id>
 
-# mainブランチのdocsフォルダの内容だけを現在のブランチにコピー
+# mainブランチのdocsフォルダの内容だけを現在(orphas)ブランチにコピー
 git checkout main -- docs/ 
 ```
 ## Worktree
@@ -215,6 +220,10 @@ git worktree list
 # 指定したワークツリーを削除する
 git worktree remove <パス>
 ```
+## Fork
+- 相手のリポジトリを自分のアカウントに「コピー」してきます。
+オープンソースのリポジトリは、自分のアカウントにフォークしてからクローンする。
+直cloneだとpushができず、リモートリポジトリで管理できなくなる。
 # ベストプラクティス
 ## コミットの粒度とタイミング
 - 「機能追加」「バグ修正」「リファクタリング」などを混ぜない。
@@ -239,8 +248,18 @@ git worktree remove <パス>
 - ここでコミットしてもどのブランチにも属さないため、後で参照できなくなる可能性がある。
 - 変更を保存したい場合は、新しいブランチを作成する: `git checkout -b <new-branch-name>`
 # SourceTree操作
+## 外部diff設定
+### 外部diffをvscodeに設定する
+1. ツール ->オプション->Diffタブから、外部diffツールをカスタムに変更
+2. Diffコマンドをcode 引数を`--diff \"$LOCSL\" \"REMOTE\"に変更
+### 外部diffをwinmergeに設定する
+1. ツール ->オプション->Diffタブから、外部diffツールをwinmergeに変更
 ## カスタム操作
 - ツール -> オプション -> カスタム操作 -> 追加
 - 設定例
 >実行するスクリプト : `git`
   パラメータ : `clean -fd`
+## ブランチとdiffをとる
+1. ブランチ名を右クリック
+2. 「現在の内容とDiffを表示」をクリック
+3. 歯車から「外部diffを起動」を選択
