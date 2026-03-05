@@ -3,38 +3,39 @@ name: Sync Obsidian Vault to Google Drive
 on:
   push:
     branches:
-      - main  # mainにプッシュされた時
-  schedule:
-    - cron: '0 0 * * *' # 毎日定時実行したい場合
-  workflow_dispatch:      # 手動実行用
+      - main
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup rclone
-        uses: rclone/rclone-action@v1
+      # 1. rcloneをインストール
+      - name: Install rclone
+        run: sudo curl https://rclone.org/install.sh | sudo bash
 
-      - name: Create rclone config
+      # 2. rcloneの設定ファイルを生成
+      - name: Configure rclone
         run: |
           mkdir -p ~/.config/rclone
           cat <<EOF > ~/.config/rclone/rclone.conf
           [gdrive]
           type = drive
           service_account_contents = ${{ secrets.GDRIVE_JSON }}
-          team_drive = 
           EOF
 
-      - name: Sync to Google Drive
+      # 3. 同期実行（フォルダIDをシークレットから取得）
+      - name: rclone sync
         run: |
-          # .gitや設定ファイル(.obsidian)を除外して、mdファイルを中心に同期
-          # --drive-use-trash は削除時にゴミ箱へ入れる設定
           rclone sync . gdrive:${{ secrets.GDRIVE_FOLDER_ID }} \
             --include "*.md" \
             --include "*.pdf" \
+            --include "*.png" \
+            --include "*.jpg" \
             --exclude ".git/**" \
             --exclude ".obsidian/**" \
-            --drive-use-trash
+            --drive-use-trash \
+            -v
