@@ -24,7 +24,7 @@ jobs:
           cat <<EOF > ~/.config/rclone/rclone.conf
           [gdrive]
           type = drive
-          service_account_contents = ${{ secrets.GDRIVE_JSON }}
+          service_account_contents = ${{ secrets.GOOGLEDRIVE }}
           team_drive = 
           EOF
 
