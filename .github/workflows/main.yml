@@ -3,7 +3,7 @@ name: Sync Obsidian Vault to Google Drive
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:  # 手動実行ボタンを有効化
 
 jobs:
