@@ -1,41 +1,29 @@
-name: Sync Obsidian Vault to Google Drive
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # 1. rcloneをインストール
-      - name: Install rclone
-        run: sudo curl https://rclone.org/install.sh | sudo bash
-
-      # 2. rcloneの設定ファイルを生成
+# 2. rcloneの設定ファイルを生成
       - name: Configure rclone
+        env:
+          GDRIVE_JSON: ${{ secrets.GDRIVE_JSON }}
         run: |
           mkdir -p ~/.config/rclone
+          # 環境変数から直接ファイルに出力することで、***への置き換えを回避
+          echo "$GDRIVE_JSON" > ~/.config/rclone/service-account.json
+          
           cat <<EOF > ~/.config/rclone/rclone.conf
           [gdrive]
           type = drive
-          service_account_contents = ${{ secrets.GOOGLEDRIVE }}
+          service_account_file = /home/runner/.config/rclone/service-account.json
+          scope = drive
           EOF
 
-      # 3. 同期実行（フォルダIDをシークレットから取得）
+      # 3. 同期実行
       - name: rclone sync
         run: |
           rclone sync . gdrive:${{ secrets.GDRIVE_FOLDER_ID }} \
-            --include "*.md" \
-            --include "*.pdf" \
-            --include "*.png" \
-            --include "*.jpg" \
-            --exclude ".git/**" \
-            --exclude ".obsidian/**" \
+            --filter "+ *.md" \
+            --filter "+ *.pdf" \
+            --filter "+ *.png" \
+            --filter "+ *.jpg" \
+            --filter "- .git/**" \
+            --filter "- .obsidian/**" \
+            --filter "- **" \
             --drive-use-trash \
             -v
