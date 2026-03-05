@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch:  # 手動実行ボタンを有効化
 
 jobs:
   sync:
@@ -13,17 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1. rcloneをインストール
       - name: Install rclone
         run: sudo curl https://rclone.org/install.sh | sudo bash
 
-      # 2. rcloneの設定ファイルを生成
       - name: Configure rclone
         env:
           GDRIVE_JSON: ${{ secrets.GDRIVE_JSON }}
         run: |
           mkdir -p ~/.config/rclone
-          # 環境変数から直接ファイルに出力することで、***への置き換えを回避
           echo "$GDRIVE_JSON" > ~/.config/rclone/service-account.json
           
           cat <<EOF > ~/.config/rclone/rclone.conf
@@ -33,7 +30,6 @@ jobs:
           scope = drive
           EOF
 
-      # 3. 同期実行
       - name: rclone sync
         run: |
           rclone sync . gdrive:${{ secrets.GDRIVE_FOLDER_ID }} \
