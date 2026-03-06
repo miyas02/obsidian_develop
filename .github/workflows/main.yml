@@ -21,18 +21,22 @@ jobs:
           GDRIVE_JSON: ${{ secrets.GDRIVE_JSON }}
         run: |
           mkdir -p ~/.config/rclone
-          echo "$GDRIVE_JSON" > ~/.config/rclone/service-account.json
+          # サービスアカウントのJSONを書き出し
+          echo "$GDRIVE_JSON" > $HOME/.config/rclone/service-account.json
           
-          cat <<EOF > ~/.config/rclone/rclone.conf
+          # rclone.conf の作成
+          cat <<EOF > $HOME/.config/rclone/rclone.conf
           [gdrive]
           type = drive
-          service_account_file = /home/runner/.config/rclone/service-account.json
+          service_account_file = $HOME/.config/rclone/service-account.json
+          root_folder_id = 1zN2YD4Yf907y1vlVL0S-4iz7iq_BbwsI
           scope = drive
           EOF
 
       - name: rclone sync
         run: |
-          rclone sync . gdrive:${{ secrets.GDRIVE_FOLDER_ID }} \
+          # 修正済み：gdrive: の後ろは空でOK
+          rclone sync . gdrive: \
             --filter "+ *.md" \
             --filter "+ *.pdf" \
             --filter "+ *.png" \
