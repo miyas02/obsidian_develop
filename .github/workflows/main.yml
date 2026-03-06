@@ -18,7 +18,7 @@ jobs:
 
       - name: Configure rclone
         env:
-          GDRIVE_JSON: ${{ secrets.GDRIVE_JSON }}
+          GDRIVE_JSON: ${{ secrets.GDRIVE_TOKEN }}
         run: |
           mkdir -p ~/.config/rclone
           # サービスアカウントのJSONを書き出し
