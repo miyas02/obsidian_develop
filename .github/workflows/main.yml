@@ -18,24 +18,25 @@ jobs:
 
       - name: Configure rclone
         env:
-          GDRIVE_JSON: ${{ secrets.GDRIVE_TOKEN }}
+          # GitHub Secrets に保存したトークンを呼び出す
+          GDRIVE_TOKEN: ${{ secrets.GDRIVE_TOKEN }}
         run: |
           mkdir -p ~/.config/rclone
-          # サービスアカウントのJSONを書き出し
-          echo "$GDRIVE_JSON" > $HOME/.config/rclone/service-account.json
           
-          # rclone.conf の作成
+          # rclone.conf をトークン方式で作成
           cat <<EOF > $HOME/.config/rclone/rclone.conf
           [gdrive]
           type = drive
-          service_account_file = $HOME/.config/rclone/service-account.json
-          root_folder_id = 1zN2YD4Yf907y1vlVL0S-4iz7iq_BbwsI
           scope = drive
+          # ここに Secrets から取得した JSON トークンが入ります
+          token = $GDRIVE_TOKEN
+          # 保存先となるフォルダID（あなたのメインストレージ内）
+          root_folder_id = 1zN2YD4Yf907y1vlVL0S-4iz7iq_BbwsI
           EOF
 
       - name: rclone sync
         run: |
-          # 修正済み：gdrive: の後ろは空でOK
+          # gdrive: の後ろを空にすることで root_folder_id の直下に同期されます
           rclone sync . gdrive: \
             --filter "+ *.md" \
             --filter "+ *.pdf" \
