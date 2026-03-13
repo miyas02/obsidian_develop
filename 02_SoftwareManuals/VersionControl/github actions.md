@@ -1,3 +1,94 @@
+# 概要
+CI/CDプラットフォーム
+## Workflows
+1つ以上のジョブを含む自動化プロセス
+リポジトリ内の`.github/workflows`ディレクトリで定義する。
+## イベント
+ワークフローを実行するトリガー
+## ジョブ
+**ジョブ**とは、同じ**ランナー**で実行される、ワークフロー内の一連の**ステップ**です。
+## アクション
+**ワークフロー**内で特定のタスクを実行する、再利用可能な定義済みジョブまたはコードのセットです
+## ランナー
+**ランナー**とは、ワークフローがトリガーされると実行されるサーバーです。
+# ワークフロー構文(yml)
+`.github/workflows/` ディレクトリにYAML形式のファイルを配置することで、自動化（CI/CD）の定義を行います。
+## 基本構造
+```yaml
+name: Workflow Name          # ワークフローの名前
+on: [push]                   # 実行タイミング（トリガー）
+jobs:                        # 実行する処理のグループ
+  job_id:                    # ジョブの一意識別子
+    runs-on: ubuntu-latest   # 実行環境
+    steps:                   # 実行する手順のリスト
+      - name: Step 1
+        run: echo "Hello"
+```
+## 主要キーワードの詳細
+### `name` (任意)
+GitHubの「Actions」タブに表示される名前です。
+`on` (必須)
+### ワークフローを実行する**トリガー**を指定します。
+- **単一イベント:** `on: push`
+- **複数イベント:** `on: [push, pull_request]`
+**詳細設定:**
+```yaml
+on:
+	push:
+		branches: [ main ]      # mainブランチへのpush時のみ
+		paths: [ 'src/**' ]     # srcディレクトリ配下の変更時のみ
+		schedule:
+			- cron: '0 0 * * *'    # 毎日0時に実行
+	workflow_dispatch:        # 手動実行ボタンを有効化
+```
+### `jobs` (必須)
+ワークフロー内で実行される1つ以上のジョブを定義します。
+### `runs-on` (必須)
+ジョブを実行する仮想マシンのOSを指定します。
+- `ubuntu-latest` (推奨)
+- `windows-latest`
+- `macos-latest`
+### `steps` (必須)
+ジョブの中で実行される個別のタスクのリストです。
+#### `uses`
+GitHub公式やコミュニティが作成した**既存のアクション**を利用します
+#### `run`
+**シェルコマンド**を直接実行します。
+#### `env`
+環境変数を定義します。
+### サンプルコード
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run build
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
+```
 # GitHub Actions x Google Drive 連携マニュアル
 ## 1. Google Cloud 側の設定（認証情報の作成）
 Google Driveへプログラムからアクセスするための「サービスアカウント」を作成します。
@@ -78,7 +169,7 @@ jobs:
 1. NotebookLMでノートブックを作成し、ソースとして **Google Driveのフォルダ** を指定します。
 2. Obsidianでメモを更新し、GitHubへプッシュ（またはActionsを手動実行）します。
 3. Google Driveの更新を確認後、NotebookLMのソース画面で **「再読み込み（更新）」** アイコンをクリックすると、最新のメモがAIに反映されます。
-## 💡 トラブルシューティング
+## トラブルシューティング
 - **Failed to queue workflow run**: GitHub側の障害（GitHub Statusを確認）または、YAMLのインデントミス、全角スペースの混入を疑ってください。GitHub上のエディタで貼り付け直すと解決することがあります。
 - **Empty token found**: サービスアカウントの設定（`service_account_file`）が正しく読み込めていません。上記YAMLの `Configure rclone` ステップが最新か確認してください。
 - **Permission Denied**: Google Driveフォルダの共有設定で、サービスアカウントに「編集者」権限があるか再確認してください。
