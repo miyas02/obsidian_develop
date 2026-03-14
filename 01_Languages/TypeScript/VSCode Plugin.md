@@ -66,3 +66,26 @@ export function activate(context: vscode.ExtensionContext) {
 `state` markdownファイル全部が入ったオブジェクト
 `token` markdownを分解した最小単位
 `token.content` 生のテキストデータ
+
+# プラグイン設定（VSCode設定統合）
+ユーザーがVSCodeの設定画面から変更できる方式。
+## package.json
+```json
+"contributes": {
+  "configuration": {
+    "title": "拡張機能名",
+    "properties": {
+      "extensionName.settingKey": {
+        "type": "array",
+        "default": [],
+        "description": "設定の説明"
+      }
+    }
+  }
+}
+```
+## extension.ts で読み込み
+```ts
+const config = vscode.workspace.getConfiguration('extensionName');
+const value = config.get<string[]>('settingKey');
+```

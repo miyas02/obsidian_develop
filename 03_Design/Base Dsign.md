@@ -1,5 +1,11 @@
+```table-of-contents
+
+```
+
 # 基本設計書フォーマット
 [[Base Design Format]]
+
+
 # 機能一覧
 | 機能ID | 画面ID | 大カテゴリ | 中カテゴリ | 機能名 | 機能概要 | ユースケース |
 | ---- | ---- | ----- | ----- | --- | ---- | ------ |
@@ -42,6 +48,8 @@ flowchart TD
 - ER図
 # ロジック設計
 - クラス図
+# エラーハンドリング
+
 # 基本設計ナレッジ
 ## アーカイブ
 [[C:\work\repos\Jinro_visualize\docs\spec\phase1_基本設計.md]]
