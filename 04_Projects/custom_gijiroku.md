@@ -1,10 +1,12 @@
 - リポジトリ
 [miyas02/vscode_plugin_gijiroku](https://github.com/miyas02/vscode_plugin_gijiroku)
+- 0.0.1 Release
+[Release custom-gijiroku0.0.2 · miyas02/vscode_plugin_gijiroku](https://github.com/miyas02/vscode_plugin_gijiroku/releases/tag/custom-gijiroku0.0.2)
 # Base Design
 ## 概要
 visual studio codeのプラグイン
 コードブロック「giji」と記載すると、議事録用に文字列変換する
-文字列変換はコンフィグファイルで設定可能。
+文字列変換はvscode設定統合で設定可能。
 ## Function List
 
 | 機能ID | カテゴリ  | 機能名                 | 機能概要                                        |
@@ -22,3 +24,9 @@ visual studio codeのプラグイン
 | ------ | ---------- | -------------- | ----------- |
 | 1      | vscode設定統合 | replace_target | 置換対象の文字列を定義 |
 | 2      | vscode設定統合 | replace_text   | 置換法則を定義     |
+# Detail Design
+## F01 インストール時のPlugin初期化処理
+
+# 実装
+## F01 インストール時のPlugin初期化処理
+
