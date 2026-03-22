@@ -70,22 +70,28 @@ $json | ConvertTo-Json | Set-Content "$env:USERPROFILE\.claude.json"
 ## claude codeをコンテナに追加したdevcontainers.json
 ```json
 {
-    "name": "Node.js & TypeScript",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-bookworm",
-    "mounts": [
-"source=${localEnv:USERPROFILE}/.claude,target=/home/node/.claude,type=bind",	       "source=${localEnv:USERPROFILE}/.claude.json,target=/home/node/.claude.json,type=bind"
-    ],
-    "remoteEnv": {
-        "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}"
-    },
-    "postCreateCommand": "npm install -g @anthropic-ai/claude-code",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "anthropic.claude-dev"
-            ]
-        }
-    },
-    "remoteUser": "node"
+    "name": "C# (.NET)",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:2-10.0-noble",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        }
+    },
+    "mounts": [
+       "source=${localEnv:USERPROFILE}/.claude,target=/home/vscode/.claude,type=bind",
+        "source=${localEnv:USERPROFILE}/.claude.json,target=/home/vscode/.claude.json,type=bind"
+    ],
+    "remoteEnv": {
+        "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}"
+    },
+    "postCreateCommand": "npm install -g @anthropic-ai/claude-code @linear/sdk && claude mcp add --transport stdio linear -- npx -y @modelcontextprotocol/server-linear",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "anthropic.claude-dev"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
 }
 ```

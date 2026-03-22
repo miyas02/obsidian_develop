@@ -225,3 +225,16 @@ flowchart TD
         Row1 ~~~ Row2 ~~~ Row3
     end
 ```
+# config
+- `classDef 名前 fill:...,stroke:...,color:...` でスタイルを定義
+- クラス名の後ろに `:::スタイル名` を付けて適用
+- `<<interface>>` を持つクラスには `interfaceStyle`、通常クラスには `classStyle` を割り当てるだけ
+色を変えたい場合は `fill`（背景）・`stroke`（枠線）・`color`（テキスト）の3つを調整してください。
+
+```mermaid
+class InterfaceObject :::interfaceStyle
+class AbstractObject :::abstractStyle
+
+classDef interfaceStyle fill:#CECBF6,stroke:#534AB7,color:#3C3489
+classDef abstractStyle fill:#9FE1CB,stroke:#0F6E56,color:#085041
+```
